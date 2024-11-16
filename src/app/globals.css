@@ -4,13 +4,13 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000; /* Default text color to black */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #000000; /* Keep text color black in dark mode */
   }
 }
 
@@ -25,5 +25,3 @@ body {
     text-wrap: balance;
   }
 }
-
-

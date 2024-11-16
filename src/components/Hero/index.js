@@ -71,7 +71,7 @@ const Index = () => {
         <div className='w-3/4'>
           <h1 className='text-md lg:text-3xl text-center mb-3 text-white'>Employee Login Form:</h1>
           <form className='flex flex-col bg-white p-4 rounded-md' onSubmit={handleSubmit}>
-            <label className='mb-1 mt-6'><b>Enter Your Employee Id:</b></label>
+            <label className='mb-1 mt-6 text-black'><b>Enter Your Employee Id:</b></label>
             <input 
               type="text"
               name='employeeID'
@@ -79,9 +79,9 @@ const Index = () => {
               onChange={handleOnChange}
               value={formData.employeeID}
               placeholder='Enter Your Employee ID'
-              className='border-2 border-black p-2 mb-4 hover:bg-blue-100 rounded-sm'
+              className='border-2 border-black p-2 mb-4 hover:bg-blue-100 rounded-sm text-black'
             />
-            <label className='mb-1'><b>Enter Your Password:</b></label>
+            <label className='mb-1 text-black'><b>Enter Your Password:</b></label>
             <div className='relative'>
               <input 
                 type={showPassword ? 'text' : 'password'} // Toggle between password and text input
@@ -90,7 +90,7 @@ const Index = () => {
                 onChange={handleOnChange}
                 value={formData.password}
                 placeholder='Enter Your Password'
-                className='border-2 border-black p-2 mb-4 hover:bg-blue-100 rounded-sm w-full'
+                className='border-2 border-black p-2 mb-4 hover:bg-blue-100 rounded-sm w-full text-black'
               />
               <button 
                 type="button"

@@ -290,7 +290,7 @@ const Page = () => {
                                                             type="text"
                                                             value={contact.relation}
                                                             onChange={(e) => handleEmergencyChange(index, 'relation', e.target.value)}
-                                                            className='border border-gray-300 rounded-md shadow-sm p-1'
+                                                            className='border border-gray-300 rounded-md shadow-sm p-1 text-black'
                                                         />
                                                     </td>
                                                     <td className='px-4 py-2'>
@@ -298,7 +298,7 @@ const Page = () => {
                                                             type="text"
                                                             value={contact.contact}
                                                             onChange={(e) => handleEmergencyChange(index, 'contact', e.target.value)}
-                                                            className='border border-gray-300 rounded-md shadow-sm p-1'
+                                                            className='border border-gray-300 rounded-md shadow-sm p-1 text-black'
                                                         />
                                                     </td>
                                                 </tr>
