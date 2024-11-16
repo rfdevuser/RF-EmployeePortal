@@ -34,12 +34,10 @@ const Page = () => {
         }
     }, [router]);
 
-
-
     const { loading: queryLoading, data: queryData, error } = useQuery(GET_EMPLOYEE_PERSONAL_DETAILS, {
         variables: { employeeID: employeeIDD },
     });
-console.log(queryData)
+
     useEffect(() => {
         if (queryData) {
             const employeeDetails = queryData.getEmployeeDetailsByEmployeeID;
@@ -51,12 +49,18 @@ console.log(queryData)
             setMaritalStatus(employeeDetails.marital);
             setAdditionalContact(employeeDetails.add_contact);
             setAdditionalEmail(employeeDetails.add_email);
-            setEmergencyContacts([
-                { name: employeeDetails.emergencyName1, relation: employeeDetails.emergencyRelation1, contact: employeeDetails.emergencyContact1 },
-                { name: employeeDetails.emergencyName2, relation: employeeDetails.emergencyRelation2, contact: employeeDetails.emergencyContact2 },
-            ]);
+            setEmergencyContacts([{
+                name: employeeDetails.emergencyName1,
+                relation: employeeDetails.emergencyRelation1,
+                contact: employeeDetails.emergencyContact1
+            }, {
+                name: employeeDetails.emergencyName2,
+                relation: employeeDetails.emergencyRelation2,
+                contact: employeeDetails.emergencyContact2
+            }]);
         }
     }, [queryData]);
+
     const handleLogout = () => {
         localStorage.removeItem('employeeData');
         router.push('/');
@@ -83,8 +87,6 @@ console.log(queryData)
 
     const handleSubmit = async () => {
         setLoading(true);
- 
-
         const submittedData = {
             add_contact: additionalContact,
             add_email: additionalEmail,
@@ -101,10 +103,10 @@ console.log(queryData)
             emergencyContact2: emergencyContacts[1].contact,
             emergencyName2: emergencyContacts[1].name,
             emergencyRelation2: emergencyContacts[1].relation,
-            employeeID: data.employeeID, // Assuming employee ID is stored here
+            employeeID: data.employeeID,
             gender,
             marital: maritalStatus,
-            name: data.name, // Assuming name is stored here
+            name: data.name,
         };
 
         try {
@@ -120,7 +122,7 @@ console.log(queryData)
             setLoading(false);
         }
     };
-console.log(additionalContact)
+
     return (
         <>
             {data && <HeaderNav name={data.name} highlight='Employee Personal Details' />}
@@ -263,68 +265,80 @@ console.log(additionalContact)
                                 </div>
 
                                 <h2 className='text-lg font-semibold mt-6 mb-4'>Emergency Contacts</h2>
-                                <table className='min-w-full divide-y divide-gray-200'>
-                                    <thead>
-                                        <tr>
-                                            <th className='px-4 py-2 text-left'>Name</th>
-                                            <th className='px-4 py-2 text-left'>Relation</th>
-                                            <th className='px-4 py-2 text-left'>Contact Number</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {emergencyContacts.map((contact, index) => (
-                                            <tr key={index}>
-                                                <td className='px-4 py-2'>
-                                                    <input
-                                                        type="text"
-                                                        value={contact.name}
-                                                        onChange={(e) => handleEmergencyChange(index, 'name', e.target.value)}
-                                                        className='border border-gray-300 rounded-md shadow-sm p-1'
-                                                    />
-                                                </td>
-                                                <td className='px-4 py-2'>
-                                                    <input
-                                                        type="text"
-                                                        value={contact.relation}
-                                                        onChange={(e) => handleEmergencyChange(index, 'relation', e.target.value)}
-                                                        className='border border-gray-300 rounded-md shadow-sm p-1'
-                                                    />
-                                                </td>
-                                                <td className='px-4 py-2'>
-                                                    <input
-                                                        type="text"
-                                                        value={contact.contact}
-                                                        onChange={(e) => handleEmergencyChange(index, 'contact', e.target.value)}
-                                                        className='border border-gray-300 rounded-md shadow-sm p-1'
-                                                    />
-                                                </td>
+                                <div className="overflow-x-auto">
+                                    <table className='min-w-full divide-y divide-gray-200'>
+                                        <thead>
+                                            <tr>
+                                                <th className='px-4 py-2 text-left'>Name</th>
+                                                <th className='px-4 py-2 text-left'>Relation</th>
+                                                <th className='px-4 py-2 text-left'>Contact Number</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {emergencyContacts.map((contact, index) => (
+                                                <tr key={index}>
+                                                    <td className='px-4 py-2'>
+                                                        <input
+                                                            type="text"
+                                                            value={contact.name}
+                                                            onChange={(e) => handleEmergencyChange(index, 'name', e.target.value)}
+                                                            className='border border-gray-300 rounded-md shadow-sm p-1'
+                                                        />
+                                                    </td>
+                                                    <td className='px-4 py-2'>
+                                                        <input
+                                                            type="text"
+                                                            value={contact.relation}
+                                                            onChange={(e) => handleEmergencyChange(index, 'relation', e.target.value)}
+                                                            className='border border-gray-300 rounded-md shadow-sm p-1'
+                                                        />
+                                                    </td>
+                                                    <td className='px-4 py-2'>
+                                                        <input
+                                                            type="text"
+                                                            value={contact.contact}
+                                                            onChange={(e) => handleEmergencyChange(index, 'contact', e.target.value)}
+                                                            className='border border-gray-300 rounded-md shadow-sm p-1'
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div className='flex justify-center'>
-                            <Link href='/EmployeeAddress'>
-                            <button
+                                <Link href='/EmployeeAddress'>
+                                    <button
                                         onClick={handleSubmit}
-                                        className='mt-4 px-4 py-2 bg-[#334155] hover:bg-black text-white rounded-md '
+                                        className='mt-4 px-4 py-2 bg-[#334155] hover:bg-black text-white rounded-md'
                                         disabled={loading} // Disable button when loading
                                     >
                                         {loading ? "Please wait..." : "Submit and Next ➤"} {/* Change button text based on loading state */}
                                     </button>
-                            </Link>
+                                </Link>
                             </div>
                         </div>
                     ) : (
                         <p>Loading...</p>
                     )}
                 </div>
-                <button
-                    onClick={handleLogout}
-                    className='absolute top-3 right-3 text-white'
-                >
-                    Logout
-                </button>
+                <div className='absolute top-3 right-3 text-white flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4'>
+                    <button
+                        onClick={handleLogout}
+                        className='bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors'
+                    >
+                        Logout
+                    </button>
+
+                    <Link href={`/EmployeeDashboard?id=${employeeIDD}`} as={`/EmployeeDashboard/${employeeIDD}`}>
+                        <button
+                            className='bg-green-400 text-black px-4 py-2 rounded-md hover:bg-green-500 transition-colors'
+                        >
+                            Dashboard
+                        </button>
+                    </Link>
+                </div>
             </div>
         </>
     );

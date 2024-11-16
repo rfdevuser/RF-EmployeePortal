@@ -140,3 +140,15 @@ export const GET_EMPLOYEE_LANGUAGE = gql`
     }
   }
 `;
+
+
+export const GET_EMPLOYEE_VERIFICATION = gql`
+  query GetEmployeeVerification($employeeID: String!) {
+    employeeVerificationByID(empID: $employeeID) {
+      empID
+      idPrimary
+      submittedAt
+      verificationStatus
+    }
+  }
+`;

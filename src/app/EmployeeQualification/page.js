@@ -62,17 +62,7 @@ const EmployeeQualification = () => {
         router.push('/');
     };
 
-    const addQualification = () => {
-        setQualifications([
-            ...qualifications,
-            { slNo: qualifications.length + 1, qualification: '', year: '', institute: '', university: '', percentage: '' }
-        ]);
-    };
 
-    const deleteQualification = (index) => {
-        const newQualifications = qualifications.filter((_, i) => i !== index);
-        setQualifications(newQualifications.map((qual, i) => ({ ...qual, slNo: i + 1 })));
-    };
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission

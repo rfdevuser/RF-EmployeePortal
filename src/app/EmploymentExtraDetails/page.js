@@ -206,7 +206,7 @@ const EmployeeSkill = () => {
                             <button
                                 onClick={handleSubmitExtraDetails}
                                 disabled={loading}
-                                className={`mt-4 px-4 py-2 ${loading ? 'bg-gray-400' : 'bg-[#334155] hover:bg-black'} text-white rounded-md`}
+                                className={`mt-4 px-4 py-2  ${loading ? 'bg-gray-400' : 'bg-[#334155] hover:bg-black'} text-white rounded-md`}
                             >
                                 {loading ? 'Submitting...' : 'Post'}
                             </button>
@@ -256,10 +256,10 @@ const EmployeeSkill = () => {
                                         <td className='border border-gray-300 p-2'>
                                         <button
                                 onClick={() => handleSkillSubmit(index)}
-                                className='px-2 py-1 text-center mx-auto flex justify-center'
+                                className='px-2 py-1 text-center mx-auto flex justify-center  bg-green-600 rounded-md text-white'
                                 disabled={loadingSkill}
                             >
-                                {loadingSkill ? 'Posting...' : 'POST'}
+                                {loadingSkill ? 'Posting...' : '+'}
                             </button>
                                            
                                         </td>
@@ -329,10 +329,10 @@ const EmployeeSkill = () => {
                                         <td className='border border-gray-300 p-2'>
                                         <button
                                 onClick={() => handleLanguageSubmit(index)}
-                                className='px-2 py-1 text-center mx-auto flex justify-center'
+                                className='px-2 py-1 text-center mx-auto flex justify-center bg-green-600 rounded-md text-white'
                                 disabled={loadingLanguage}
                             >
-                                {loadingLanguage ? 'Posting...' : 'POST'}
+                                {loadingLanguage ? 'Posting...' : '+'}
                             </button>
                                          
                                         </td>

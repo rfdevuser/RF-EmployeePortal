@@ -115,7 +115,7 @@ console.log(data)
             {data && (
                 <>
                     <HeaderNav name={data.name} highlight='Documents' />
-                    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+                    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
                           {/* Display Uploaded Files */}
                           <div className='bg-blue-50 p-3'>
                           {uploadedFiles.map(({ name, url }) => (
