@@ -152,3 +152,18 @@ export const GET_EMPLOYEE_VERIFICATION = gql`
     }
   }
 `;
+
+
+export const GET_EMPLOYEE_WORK_DETAILS = gql`
+  query GetEmployeeWorkDetails($employeeID: String!) {
+    employeeDashboardWorks(employeeID: $employeeID) {
+      dateOfSubmission
+      employeeID
+      employeeName
+      status
+      timeline
+      workTicket
+      id
+    }
+  }
+`;

@@ -5,7 +5,7 @@ import HeaderNav from '@/components/HeaderNav';
 import Link from 'next/link';
 import { useMutation, useQuery } from '@apollo/client';
 import { ADD_EMPLOYEE_PERSONAL_DETAILS } from '@/utils/gql/GQL_MUTATION';
-import { GET_EMPLOYEE_PERSONAL_DETAILS } from '@/utils/gql/GQL_QUERIES';
+import { GET_EMPLOYEE_PERSONAL_DETAILS, GET_EMPLOYEE_VERIFICATION } from '@/utils/gql/GQL_QUERIES';
 
 const Page = () => {
     const router = useRouter();
@@ -37,6 +37,7 @@ const Page = () => {
     const { loading: queryLoading, data: queryData, error } = useQuery(GET_EMPLOYEE_PERSONAL_DETAILS, {
         variables: { employeeID: employeeIDD },
     });
+  
 
     useEffect(() => {
         if (queryData) {
@@ -114,13 +115,15 @@ const Page = () => {
                 variables: submittedData,
             });
             console.log(response);
-            // Optionally navigate or show success message
+            // Navigate to the next page after mutation is successful
+            router.push('/EmployeeAddress');
         } catch (error) {
             console.error("Error submitting data:", error);
             // Optionally handle error (e.g., show an error message)
         } finally {
             setLoading(false);
         }
+        
     };
 
     return (
@@ -308,15 +311,16 @@ const Page = () => {
                                 </div>
                             </div>
                             <div className='flex justify-center'>
-                                <Link href='/EmployeeAddress'>
-                                    <button
-                                        onClick={handleSubmit}
-                                        className='mt-4 px-4 py-2 bg-[#334155] hover:bg-black text-white rounded-md'
-                                        disabled={loading} // Disable button when loading
-                                    >
-                                        {loading ? "Please wait..." : "Submit and Next ➤"} {/* Change button text based on loading state */}
-                                    </button>
-                                </Link>
+                         
+                                <button
+    onClick={handleSubmit}
+    className="mt-4 px-4 py-2 bg-[#334155] hover:bg-black text-white rounded-md"
+    disabled={loading} // Disable button when loading
+>
+    {loading ? "Please wait..." : "Submit and Next ➤"}
+</button>
+
+                             
                             </div>
                         </div>
                     ) : (

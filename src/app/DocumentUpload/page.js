@@ -4,8 +4,9 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { storage } from '@/firebase'; // Ensure correct path
 import { ref, uploadBytes, getDownloadURL, listAll } from 'firebase/storage';
-import { getFirestore } from 'firebase/firestore';
 
+import { GET_EMPLOYEE_VERIFICATION } from '@/utils/gql/GQL_QUERIES';
+import { useQuery } from '@apollo/client';
 
 const Page = () => {
     const [data, setData] = useState('');
@@ -14,18 +15,10 @@ const Page = () => {
     const [isChecked, setIsChecked] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [error, setError] = useState('');
+    const [verificationStatus, setVerificationStatus] = useState('Not Verified');
     const router = useRouter();
 
-    // useEffect(() => {
-    //     const employeeData = localStorage.getItem('employeeData');
-    //     if (!employeeData) {
-    //         router.push('/');
-    //     } else {
-    //         const parsedData = JSON.parse(employeeData);
-    //         setData(parsedData);
-    //         fetchUploadedFiles(parsedData.employeeID);
-    //     }
-    // }, [router]);
+
     useEffect(() => {
         const employeeData = localStorage.getItem('employeeData');
         if (!employeeData) {
@@ -37,9 +30,9 @@ const Page = () => {
             fetchUploadedFiles(parsedData.employeeID);
         }
     }, [router]);
-console.log(data)
+    console.log(data)
     const fetchUploadedFiles = async (employeeID) => {
-        const emp = employeeID ; 
+        const emp = employeeID;
         const directoryRef = ref(storage, `uploads/${emp}/`);
 
         try {
@@ -65,25 +58,25 @@ console.log(data)
     const handleCheckboxChange = (e) => {
         setIsChecked(e.target.checked);
     };
-console.log(data)
+    console.log(data)
     const handleUpload = async () => {
         if (!data.employeeID) {
             alert("Employee ID is not available. Cannot upload files.");
             return; // Exit early if employeeID is not present
         }
-    
+
         setUploading(true);
         setError('');
         const uploadPromises = [];
-    
+
         for (const doc of Object.keys(files)) {
             if (files[doc]) {
                 const file = files[doc];
                 const fileName = `${data.employeeID}_${doc.replace(/\s+/g, '_').toLowerCase()}`;
                 const storageRef = ref(storage, `uploads/${data.employeeID}/${fileName}`);
-    
+
                 uploadPromises.push(
-                    uploadBytes(storageRef, file).then(() => 
+                    uploadBytes(storageRef, file).then(() =>
                         getDownloadURL(storageRef).then((url) => {
                             setUploadedFiles(prev => [...prev, { name: doc, url }]);
                             window.location.reload(false);
@@ -95,7 +88,7 @@ console.log(data)
                 );
             }
         }
-    
+
         try {
             await Promise.all(uploadPromises);
         } catch (error) {
@@ -105,20 +98,54 @@ console.log(data)
             setUploading(false);
         }
     };
-    
+
     const handleViewFile = (url) => {
         window.open(url, "_blank");
     };
 
+
+    const { loading: queryLoading, error: queryError, data: queryData } = useQuery(GET_EMPLOYEE_VERIFICATION, {
+        variables: { employeeID: data.employeeID },
+    });
+
+    useEffect(() => {
+        if (queryData && queryData.employeeVerificationByID) {
+            // Check if verificationStatus is 1 (Verified)
+            if (queryData.employeeVerificationByID.verificationStatus === '1') {
+                setVerificationStatus('Verified');
+            } else {
+                setVerificationStatus('Not Verified');
+            }
+        } else {
+            setVerificationStatus('Not Verified');
+        }
+    }, [queryData]);
     return (
         <>
+
             {data && (
                 <>
                     <HeaderNav name={data.name} highlight='Documents' />
                     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-                          {/* Display Uploaded Files */}
-                          <div className='bg-blue-50 p-3'>
-                          {uploadedFiles.map(({ name, url }) => (
+
+                        <div>
+                            <h3>Verification Status</h3>
+                            {queryLoading ? (
+                                <p>Loading verification status...</p>
+                            ) : queryError ? (
+                                <p>Error loading verification status</p>
+                            ) : (
+                                <div>
+                                    <p><strong>Employee ID:</strong> {queryData?.employeeVerificationByID?.empID}</p>
+                                    <p><strong>Verification Status:</strong> {verificationStatus}
+                                    </p>
+                                    <p><strong>Verified At:</strong> {queryData?.employeeVerificationByID?.submittedAt}</p>
+                                </div>
+                            )}
+                        </div>
+                        {/* Display Uploaded Files */}
+                        <div className='bg-blue-50 p-3'>
+                            {uploadedFiles.map(({ name, url }) => (
                                 <div key={name} className="mt-2 text-sm text-gray-600 flex items-center">
                                     <span>{name}</span>
                                     <button
@@ -129,7 +156,7 @@ console.log(data)
                                     </button>
                                 </div>
                             ))}
-                            </div>
+                        </div>
                         <h2 className="text-2xl font-semibold mb-4 text-center">Upload Your Documents</h2>
                         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
                         <form className="space-y-6">
@@ -168,7 +195,7 @@ console.log(data)
                                 </div>
                             ))}
 
-                          
+
 
                             <div className="flex items-center mt-4">
                                 <input
@@ -184,14 +211,14 @@ console.log(data)
                             </div>
 
                             <button
-    type="button"
-    onClick={handleUpload}
-    disabled={uploading || !isChecked}
-    className={`mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-md
+                                type="button"
+                                onClick={handleUpload}
+                                disabled={uploading || !isChecked}
+                                className={`mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-md
         ${uploading || !isChecked ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
->
-    {uploading ? 'Uploading...' : 'Upload All'}
-</button>
+                            >
+                                {uploading ? 'Uploading...' : 'Upload All'}
+                            </button>
 
                         </form>
                     </div>

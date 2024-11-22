@@ -5,13 +5,7 @@ import HeaderNav from '@/components/HeaderNav';
 import { useMutation, useQuery } from '@apollo/client';
 import { EMPLOYEE_QUALIFICATION_INSERT } from '@/utils/gql/GQL_MUTATION';
 import { GET_EMPLOYEE_QUALIFICATIONS } from '@/utils/gql/GQL_QUERIES';
-const Shimmer = () => (
-    <div className="space-y-4">
-        <div className="h-4 bg-gray-300 animate-pulse rounded"></div>
-        <div className="h-4 bg-gray-300 animate-pulse rounded"></div>
-        <div className="h-4 bg-gray-300 animate-pulse rounded"></div>
-    </div>
-);
+
 
 const EmployeeQualification = () => {
     const [data, setData] = useState('');
@@ -94,7 +88,7 @@ const EmployeeQualification = () => {
         router.push('/EmployeeFamily');
     };
 
-    if (queryLoading) return <Shimmer />;
+    if (queryLoading) return  <p className='h-full flex justify-center text-2xl text-red-800 h-screen items-center'>Please wait...</p>;
     if (queryError) return <p>Error: {queryError.message}</p>;
 
     return (

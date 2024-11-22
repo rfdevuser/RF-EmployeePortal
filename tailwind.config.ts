@@ -8,6 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+  
+        filter: {
+          blur: 'blur(5px)',
+        },
+  
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
