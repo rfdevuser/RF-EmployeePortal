@@ -285,3 +285,43 @@ export const EMPLOYEE_LANGUAGE_UPDATE = gql`
     }
   }
 `;
+
+
+export const EMPLOYEE_WORK_STATUS_UPDATE = gql`
+  mutation UpdateEmployeeWorkStatus(
+    $clientMutationId: String!,
+    $id: String!,
+    $status: String!,
+    $dateOfCompletion: String!
+  ) {
+    employeeUpdateWorkStatus(input: {
+      clientMutationId: $clientMutationId,
+      id: $id,
+      status: $status,
+      dateOfCompletion: $dateOfCompletion
+    }) {
+      clientMutationId
+      responseMessage
+    }
+  }
+`;
+
+
+export const EMPLOYEE_DAILY_ACTIVITY_INSERT = gql`
+  mutation InsertEmployeeDailyActivity(
+    $clientMutationId: String!,
+    $employeeID: String!,
+    $workDetails: String!,
+    $submissionDate: String!
+  ) {
+    employeeInsertDailyActivity(input: {
+      clientMutationId: $clientMutationId,
+      employeeID: $employeeID,
+      workDetails: $workDetails,
+      submissionDate: $submissionDate
+    }) {
+      clientMutationId
+      responseMessage
+    }
+  }
+`;

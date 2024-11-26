@@ -167,3 +167,13 @@ export const GET_EMPLOYEE_WORK_DETAILS = gql`
     }
   }
 `;
+
+export const GET_INDIVIDUAL_EMPLOYEE_DAILYACTIVITY = gql`
+query GetIndividualEmployeeDailyWorkDetails($employeeID:String) {
+  employeeDailyActivities(employeeID: $employeeID) {
+    date_of_submission
+   
+    id
+   
+  }
+}`
