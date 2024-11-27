@@ -158,7 +158,7 @@ console.log(workData)
     <>
       <div className={`relative ${!isVerified ? 'blurred' : ''}`}>
         {isVerified ? (
-          <div>
+          <div className='bg-white'>
             <b className='flex justify-center text-red-600 text-md lg:text-3xl mt-3 mb-3'>
               Hello {data}, Welcome to Rakhis Fashions
             </b>
