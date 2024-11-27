@@ -262,7 +262,7 @@ const EmployeeAddress = () => {
                         </div>
                         
                         <div className='flex justify-center'>
-                            <Link href='/EmployeeQualification'>
+                            
                             <button
                                 onClick={handleSubmit}
                                 disabled={loading} // Disable button while loading
@@ -270,7 +270,8 @@ const EmployeeAddress = () => {
                             >
                                 {loading ? 'Please wait...' : 'Submit and Next ➤'}
                             </button>
-                            </Link>
+                            
+                      
                             </div>
                     </div>
                 </div>
