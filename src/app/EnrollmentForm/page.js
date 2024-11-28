@@ -4,24 +4,28 @@ import React, { useEffect, useState } from 'react';
 import HeaderNav from '@/components/HeaderNav';
 import Link from 'next/link';
 import { useMutation, useQuery } from '@apollo/client';
-import { ADD_EMPLOYEE_PERSONAL_DETAILS } from '@/utils/gql/GQL_MUTATION';
+import { INSERT_OR_UPDATE_EMPLOYEE_PERSONAL_DETAILS } from '@/utils/gql/GQL_MUTATION';
 import { GET_EMPLOYEE_PERSONAL_DETAILS, GET_EMPLOYEE_VERIFICATION } from '@/utils/gql/GQL_QUERIES';
 
 const Page = () => {
     const router = useRouter();
     const [data, setData] = useState(null);
     const [dob, setDob] = useState('');
+    const [contact , setcontact]=useState('');
     const[employeeIDD, setEmp]=useState('')
+    const [empname , setempname] = useState('');
     const [age, setAge] = useState('');
     const [gender, setGender] = useState('');
     const [bloodGroup, setBloodGroup] = useState('');
     const [maritalStatus, setMaritalStatus] = useState('');
     const [additionalContact, setAdditionalContact] = useState('');
     const [additionalEmail, setAdditionalEmail] = useState('');
+    const [dept , setdept] = useState('')
+    const [email,setemail] =useState('');
     const [emergencyContacts, setEmergencyContacts] = useState([{ name: '', relation: '', contact: '' }, { name: '', relation: '', contact: '' }]);
     const [loading, setLoading] = useState(false);
 
-    const [addEmployeePersonalDetails] = useMutation(ADD_EMPLOYEE_PERSONAL_DETAILS);
+    const [addEmployeePersonalDetails] = useMutation(INSERT_OR_UPDATE_EMPLOYEE_PERSONAL_DETAILS);
 
     useEffect(() => {
         const employeeData = localStorage.getItem('employeeData');
@@ -30,10 +34,14 @@ const Page = () => {
         } else {
             const parsedData = JSON.parse(employeeData);
             setEmp(parsedData.employeeID)
+            setempname(parsedData.name)
+            setcontact(parsedData.contact)
+            setemail(parsedData.email)
+            setdept(parsedData.dept)
             setData(parsedData);
         }
     }, [router]);
-
+    console.log(data,"datawa")
     const { loading: queryLoading, data: queryData, error } = useQuery(GET_EMPLOYEE_PERSONAL_DETAILS, {
         variables: { employeeID: employeeIDD },
     });
@@ -87,45 +95,47 @@ const Page = () => {
     };
 
     const handleSubmit = async () => {
+        console.log("qwqerty",empname,employeeIDD,contact,email,dept,dob,age,gender,bloodGroup,maritalStatus,additionalContact,additionalEmail,emergencyContacts[0])
         setLoading(true);
         const submittedData = {
-            add_contact: additionalContact,
-            add_email: additionalEmail,
-            age: age.toString(),
-            blood: bloodGroup,
-            clientMutationId: "", // Provide a value if necessary
-            contact: data.contact,
-            department: data.dept,
-            dob,
-            email: data.email,
-            emergencyContact1: emergencyContacts[0].contact,
-            emergencyName1: emergencyContacts[0].name,
-            emergencyRelation1: emergencyContacts[0].relation,
-            emergencyContact2: emergencyContacts[1].contact,
-            emergencyName2: emergencyContacts[1].name,
-            emergencyRelation2: emergencyContacts[1].relation,
-            employeeID: data.employeeID,
-            gender,
-            marital: maritalStatus,
-            name: data.name,
+            clientMutationId: 'mutation-test-id',
+            name: String(empname || ''),
+            employeeID: String(employeeIDD || ''),
+            contact: String(contact || ''),
+            email: String(email || ''),
+            department: String(dept || ''),
+            dob: String(dob || ''),
+            age: String(age || ''),
+            gender: String(gender || ''),
+            blood: String(bloodGroup || ''),
+            marital: String(maritalStatus || ''),
+            add_contact: String(additionalContact || ''),
+            add_email: String(additionalEmail || ''),
+            emergencyName1: String(emergencyContacts[0].name || ''),
+            emergencyRelation1: String(emergencyContacts[0].relation || ''),
+            emergencyContact1: String(emergencyContacts[0].contact || ''),
+            emergencyName2: String(emergencyContacts[1].name || ''),
+            emergencyRelation2: String(emergencyContacts[1].relation || ''),
+            emergencyContact2: String(emergencyContacts[1].contact || ''),
         };
-
+        
+    
         try {
             const { data: response } = await addEmployeePersonalDetails({
                 variables: submittedData,
             });
+    
             console.log(response);
             // Navigate to the next page after mutation is successful
             router.push('/EmployeeAddress');
         } catch (error) {
             console.error("Error submitting data:", error);
-            // Optionally handle error (e.g., show an error message)
+            alert("An error occurred while submitting the data. Please try again.");
         } finally {
             setLoading(false);
         }
-
-        
     };
+    
 
     return (
         <>

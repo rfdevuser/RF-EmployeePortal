@@ -1,52 +1,54 @@
 import { gql } from "@apollo/client";
-
-export const ADD_EMPLOYEE_PERSONAL_DETAILS = gql`
-  mutation AddEmployeePersonalDetails(
-    $add_contact: String,
-    $add_email: String,
-    $age: String,
-    $blood: String,
-    $clientMutationId: String,
-    $contact: String,
-    $department: String,
-    $dob: String,
-    $email: String,
-    $emergencyContact1: String,
-    $emergencyContact2: String,
-    $emergencyName1: String,
-    $emergencyName2: String,
-    $emergencyRelation1: String,
-    $emergencyRelation2: String,
-    $employeeID: String,
-    $gender: String,
-    $marital: String,
-    $name: String
+export const INSERT_OR_UPDATE_EMPLOYEE_PERSONAL_DETAILS = gql`
+  mutation MyMutation(
+    $clientMutationId: String!,
+    $name: String!,
+    $employeeID: String!,
+    $contact: String!,
+    $email: String!,
+    $department: String!,
+    $dob: String!,
+    $age: String!,
+    $gender: String!,
+    $blood: String!,
+    $marital: String!,
+    $add_contact: String!,
+    $add_email: String!,
+    $emergencyName1: String!,
+    $emergencyRelation1: String!,
+    $emergencyContact1: String!,
+    $emergencyName2: String!,
+    $emergencyRelation2: String!,
+    $emergencyContact2: String!
   ) {
     employeeInsertintoPersonalDetails(input: {
-      add_contact: $ add_contact,
-      add_email: $add_email,
-      age: $age,
-      blood: $blood,
       clientMutationId: $clientMutationId,
+      name: $name,
+      employeeID: $employeeID,
       contact: $contact,
+      email: $email,
       department: $department,
       dob: $dob,
-      email: $email,
-      emergencyContact1: $emergencyContact1,
-      emergencyContact2: $emergencyContact2,
-      emergencyName1: $emergencyName1,
-      emergencyName2: $emergencyName2,
-      emergencyRelation1: $emergencyRelation1,
-      emergencyRelation2: $emergencyRelation2,
-      employeeID: $employeeID,
+      age: $age,
       gender: $gender,
+      blood: $blood,
       marital: $marital,
-      name: $name
+      add_contact: $add_contact,
+      add_email: $add_email,
+      emergencyName1: $emergencyName1,
+      emergencyRelation1: $emergencyRelation1,
+      emergencyContact1: $emergencyContact1,
+      emergencyName2: $emergencyName2,
+      emergencyRelation2: $emergencyRelation2,
+      emergencyContact2: $emergencyContact2
     }) {
+      clientMutationId
       responseMessage
     }
   }
 `;
+
+
 
 
 
